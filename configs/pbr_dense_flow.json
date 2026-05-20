@@ -1,0 +1,75 @@
+{
+    "models": {
+        "denoiser": {
+            "name": "SparseFlowModel",
+            "args": {
+                "resolution": 0,
+                "bottleneck_dim": 256,
+                "submask_resolution": 0,
+                "model_channels": 768,
+                "cond_channels": 1024,
+                "num_blocks": 12,
+                "num_pooled_layers": 4,
+                "num_heads": 12,
+                "mlp_ratio": 4,
+                "pe_mode": "rope",
+                "attn_mode": "windowed",
+                "window_size": 32,
+                "use_fp16": true,
+                "qk_rms_norm": true,
+                "qk_rms_norm_cross": true,
+                "use_checkpoint": true,
+                "num_context_registers": 32,
+                "context_start_block": 0,
+                "token_dim_override": 24576,
+                "submask_dim_override": 4096
+            }
+        }
+    },
+    "dataset": {
+        "name": "ImageConditionedBlockPBRDense",
+        "args": {
+            "roots": ["/mnt/data/yizhao/TRAIN"],
+            "max_block_num": 13000,
+            "max_samples": 0
+        }
+    },
+    "test_dataset": {
+        "name": "ImageConditionedBlockPBRDense",
+        "args": {
+            "roots": ["/mnt/data/yizhao/TRAIN"],
+            "max_block_num": 13000,
+            "max_samples": 16
+        }
+    },
+    "trainer": {
+        "name": "ImageConditionedPBRFlowCFGTrainer",
+        "args": {
+            "max_steps": 200000,
+            "batch_size_per_gpu": 1,
+            "batch_split": 1,
+            "noise_scale": 1.0,
+            "surface_weight": 4.0,
+            "loss_type": "v_loss",
+            "t_schedule": {
+                "name": "logitNormal",
+                "args": {"mean": -0.8, "std": 0.8}
+            },
+            "optimizer": {
+                "name": "AdamW",
+                "args": {"lr": 1e-4, "weight_decay": 0, "betas": [0.9, 0.95]}
+            },
+            "ema_rate": [0.999],
+            "grad_clip": {
+                "name": "AdaptiveGradClipper",
+                "args": {"max_norm": 4.0, "clip_percentile": 95}
+            },
+            "i_log": 200,
+            "i_print": 10,
+            "num_samples": 8,
+            "i_sample": 2500,
+            "i_save": 5000,
+            "image_cond_model": "dinov2_vitl14_reg"
+        }
+    }
+}

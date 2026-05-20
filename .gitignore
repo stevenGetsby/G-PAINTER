@@ -1,0 +1,41 @@
+# Python/cache
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# OS/editor
+.DS_Store
+.vscode/
+.idea/
+
+# Environments
+.env
+.venv/
+env/
+venv/
+
+# Training/eval artifacts
+ckpt/
+logs/
+outputs/
+render_outputs/
+samples/
+wandb/
+tb_logs/
+
+# Large generated assets
+*.npz
+*.ply
+*.obj
+*.glb
+*.tar
+*.tar.gz
+*.zst
+*.zip
+
+# Runtime logs
+*.log
+log.txt
